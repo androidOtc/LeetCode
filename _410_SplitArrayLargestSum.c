@@ -58,10 +58,10 @@ void do_split(int *nums, int numsSize, int m, int expect, int *maxSum)
             break;
     }
     int tempMax = *maxSum;
+    if(sum > tempMax)
+        tempMax = sum;
     if(index < numsSize-m+1)
     {
-        if(sum > tempMax)
-            tempMax = sum;
         do_split(nums + index + 1, numsSize - index - 1, m - 1, expect, &tempMax);
         if(index > 0)
         {
@@ -72,10 +72,12 @@ void do_split(int *nums, int numsSize, int m, int expect, int *maxSum)
             do_split(nums + index , numsSize - index, m - 1, expect, &tempMax2);
             tempMax = (tempMax2 > tempMax) ? tempMax : tempMax2;
         }
-        *maxSum = tempMax;
     }
     else
-        do_split(nums + index, numsSize - index, m -1, expect, maxSum);
+    {
+        do_split(nums + index, numsSize - index, m -1, expect, &tempMax);
+    }
+    *maxSum = tempMax;
 }
 
 int splitArray(int* nums, int numsSize, int m) {
